@@ -13,11 +13,7 @@ build/
 out/
 
 # Configuración del entorno
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
 
 # Archivos de logs
 logs/
