@@ -70,5 +70,13 @@ export class ArtistService {
         return artist;
     }
 
+    /**
+     * Get a Artist by Name (partial search)
+     * @param name Name of the artist
+     * @returns Artist found or null
+     */
+    async getByName(name: string): Promise<IArtist | null> {
+        return Artist.findOne({ name: { $regex: name, $options: "i" } });
+    }
 
 }
