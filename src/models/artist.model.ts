@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import {ArtistRole} from "./enums/artists.enum";
+import { ArtistRole } from "./enums/artists.enum";
+import { StatusEntity } from "./enums/common.enum";
 
 /**
  * Interface to define the structure of Artist
@@ -14,6 +15,7 @@ export interface IArtist extends Document {
     nationality?: string;
     instruments?: string[];
     artistKey: string;
+    status: StatusEntity;
 }
 
 /**
@@ -30,6 +32,7 @@ const ArtistSchema: Schema<IArtist> = new Schema(
         isAlive: { type: Boolean, default: true },
         nationality: { type: String },
         artistKey: { type: String, required: true },
+        status: { type: String, enum: Object.values(StatusEntity), default: StatusEntity.ACTIVATED }
     },
     { timestamps: true },
 );
