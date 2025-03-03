@@ -97,7 +97,8 @@ export class ArtistController {
                 role: artist.role,
                 isAlive: artist.isAlive || true,
                 nationality: artist.nationality,
-                artistKey: artist.artistKey || ''
+                artistKey: artist.artistKey || '',
+                status: artist.status || ''
             };
 
             ResponseHandler.success(res, artistResponse);
@@ -115,9 +116,9 @@ export class ArtistController {
         try {
             const page = Number(req.headers['page-number']) || 1;
             const limit = Number(req.headers['page-limit']) || 10;
-            const filter: FilterRequestDto = req.body;
+            const filterData: FilterRequestDto = req.body;
 
-            const pagingArtists = await this.artistService.getByFilter(page, limit, filter);
+            const pagingArtists = await this.artistService.getByFilter(page, limit, filterData.filter!);
 
             const artists: MinimalArtistDto[] = pagingArtists.data.map(artist => ({
                 id: artist.id,

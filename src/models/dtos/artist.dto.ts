@@ -14,6 +14,7 @@ export interface ArtistDto {
     isAlive: boolean;
     nationality?: string;
     artistKey?: string | null;
+    status?: string | null;
 }
 
 export interface MinimalArtistDto {
