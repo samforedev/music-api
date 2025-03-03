@@ -1,7 +1,7 @@
 /**
  * Dto to artist
  */
-import {ArtistRole} from "../enums/artists.enum";
+import { ArtistRole } from "../enums/artists.enum";
 
 export interface ArtistDto {
     id?: string | null;
@@ -20,5 +20,4 @@ export interface MinimalArtistDto {
     id: string;
     name: string;
     role: string;
-    artistKey: string;
 }
