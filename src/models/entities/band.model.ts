@@ -1,11 +1,11 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { StatusEntity } from "../enums/common.enum";
-import { IArtist } from "../entities/artist.model";
+import { IArtist } from "./artist.model";
 
 /**
  * Interface to define the structure of Band
  */
-export interface IMusicBand extends Document {
+export interface IBand extends Document {
     name: string;
     alias?: string;
     formationYear: number;
@@ -21,7 +21,7 @@ export interface IMusicBand extends Document {
 /**
  * Mongoose schema for the Band model
  */
-const MusicBandSchema: Schema<IMusicBand> = new Schema(
+const BandSchema: Schema<IBand> = new Schema(
     {
         name: { type: String, required: true },
         alias: { type: String },
@@ -36,9 +36,9 @@ const MusicBandSchema: Schema<IMusicBand> = new Schema(
     { timestamps: true }
 );
 
-MusicBandSchema.set("toObject", { virtuals: true });
-MusicBandSchema.set("toJSON", { virtuals: true });
-MusicBandSchema.virtual("membersDetails", {
+BandSchema.set("toObject", { virtuals: true });
+BandSchema.set("toJSON", { virtuals: true });
+BandSchema.virtual("membersDetails", {
     ref: "Artist",
     localField: "members",
     foreignField: "_id",
@@ -46,4 +46,4 @@ MusicBandSchema.virtual("membersDetails", {
     options: { select: "name alias role" }
 });
 
-export const MusicBand = mongoose.model<IMusicBand>("MusicBand", MusicBandSchema);
+export const Band = mongoose.model<IBand>("Band", BandSchema);

@@ -3,9 +3,9 @@ import { IArtist } from "../entities/artist.model";
 import { StatusEntity } from "../enums/common.enum";
 
 /**
- * Dto to Music Band
+ * Dto to Band
  */
-export interface MusicBandDto {
+export interface BandDto {
     id?: string | null;
     name: string;
     alias?: string | null;
@@ -18,7 +18,7 @@ export interface MusicBandDto {
     status?: StatusEntity | null;
 }
 
-export interface MinimalMusicBandDto {
+export interface MinimalBandDto {
     id: string;
     name: string;
     formationYear: number;
