@@ -1,5 +1,5 @@
 import { ArtistDto } from "../models/dtos/artist.dto";
-import { Artist, IArtist } from "../models/artist.model";
+import { Artist, IArtist } from "../models/entities/artist.model";
 import { PaginateResponse } from "../models/commons/paginateResponse.model";
 import { Paginate } from "../utils/paginateHandler";
 import { StatusEntity } from "../models/enums/common.enum";
