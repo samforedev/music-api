@@ -12,7 +12,7 @@ export class ArtistService implements IArtistService {
      * @param artistData
      * @return IArtist
      */
-    async addOne(artistData: ArtistDto): Promise<IArtist> {
+    async addOne(artistData: ArtistDto): Promise<IArtist | null> {
         const artist = new Artist(artistData);
         return await artist.save();
     }

@@ -8,7 +8,7 @@ import { StatusEntity } from "../../models/enums/common.enum";
  */
 export interface IArtistService {
 
-    addOne(artistData: ArtistDto): Promise<IArtist>;
+    addOne(artistData: ArtistDto): Promise<IArtist | null>;
 
     getAll(page: number, limit: number): Promise<PaginateResponse<IArtist>>;
 
