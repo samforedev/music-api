@@ -4,16 +4,17 @@ import { BandDto } from "../models/dtos/band.dto";
 import { IBand, Band } from "../models/entities/band.model";
 import { StatusEntity } from "../models/enums/common.enum";
 import { Paginate } from "../utils/paginateHandler";
+import { IBandService } from "./interfaces/bandService.interface";
 
-export class BandService {
+export class BandService implements IBandService {
 
     /**
      * Add new Music band to Database
      * @param musicBandData 
      * @returns IBand
      */
-    async addOne(musicBandData: BandDto): Promise<IBand> {
-        const musicBand = new Band(musicBandData);
+    async addOne(bandData: BandDto): Promise<IBand> {
+        const musicBand = new Band(bandData);
         return await musicBand.save();
     }
 
@@ -68,6 +69,16 @@ export class BandService {
     async getByArtistId(artistId: string): Promise<IBand | null> {
         const band = Band.findOne({ members: new Types.ObjectId(artistId) });
         return band;
+    }
+
+    /**
+     * Get Bands by Filters
+     * @param page 
+     * @param limit 
+     * @param filter 
+     */
+    async getByFilters(page: number, limit: number, filter: Record<string, any>): Promise<PaginateResponse<IBand>> {
+        return Paginate(Band, page, limit, filter);
     }
 
 }
