@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ArtistService } from "../services/artist.service";
+import { IArtistService } from "../services/interfaces/artistService.interface";
 import { ArtistDto, MinimalArtistDto } from "../models/dtos/artist.dto";
 import { ResponseHandler } from "../utils/responseHandler";
 import { ERROR_CHANGESTATUS, ERROR_CREATING, RESOURCE_ALREADY_EXISTS } from "../models/constants";
@@ -10,10 +11,11 @@ import { StatusEntity } from "../models/enums/common.enum";
  * Artist controller
  */
 export class ArtistController {
-    private artistService: ArtistService;
 
-    constructor() {
-        this.artistService = new ArtistService();
+    private artistService: IArtistService;
+
+    constructor(artistService?: IArtistService) {
+        this.artistService = artistService || new ArtistService();
     }
 
     /**

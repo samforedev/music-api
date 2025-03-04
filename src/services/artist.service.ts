@@ -3,8 +3,9 @@ import { Artist, IArtist } from "../models/entities/artist.model";
 import { PaginateResponse } from "../models/commons/paginateResponse.model";
 import { Paginate } from "../utils/paginateHandler";
 import { StatusEntity } from "../models/enums/common.enum";
+import { IArtistService } from "./interfaces/artistService.interface";
 
-export class ArtistService {
+export class ArtistService implements IArtistService {
 
     /**
      * Add new Artist to Database
