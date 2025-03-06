@@ -1,5 +1,4 @@
 import { Types } from "mongoose";
-import { IArtist } from "../entities/artist.model";
 import { StatusEntity } from "../enums/common.enum";
 
 /**
