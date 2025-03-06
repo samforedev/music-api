@@ -97,7 +97,7 @@ export class ArtistController {
                 deathDate: artist.deathDate || null,
                 instruments: artist.instruments || [],
                 role: artist.role,
-                isAlive: artist.isAlive || true,
+                isAlive: artist.isAlive ?? true,
                 nationality: artist.nationality,
                 artistKey: artist.artistKey || '',
                 status: artist.status || ''
