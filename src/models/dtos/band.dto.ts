@@ -11,9 +11,8 @@ export interface BandDto {
     alias?: string | null;
     formationYear: number;
     disbandYear?: number | null;
-    isAlive: boolean;
     genre: string[];
-    members: Types.ObjectId[] | IArtist[];
+    members?: Types.ObjectId[] | string[];
     nationality?: string;
     status?: StatusEntity | null;
 }
@@ -22,4 +21,14 @@ export interface MinimalBandDto {
     id: string;
     name: string;
     formationYear: number;
+}
+
+export interface AddManyArtistsResponseDto {
+    bandId?: string | null;
+    success: string[];
+    failed: Array<{ id: string; reason?: string }>
+}
+
+export interface AddManyArtistsRequestDto {
+    artistIds: string[];
 }

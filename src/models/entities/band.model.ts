@@ -12,7 +12,7 @@ export interface IBand extends Document {
     disbandYear?: number | null;
     isActive: boolean;
     genre: string[];
-    members: Types.ObjectId[] | IArtist[];
+    members?: Types.ObjectId[] | string[];
     membersDetails: IArtist[];
     nationality?: string;
     status: StatusEntity;

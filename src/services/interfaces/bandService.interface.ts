@@ -23,4 +23,6 @@ export interface IBandService {
     getByFilters(page: number, limit: number, filter: Record<string, any>)
         : Promise<PaginateResponse<IBand>>;
 
+    addMembers(id: string, artistsIds: string[]): Promise<IBand | null>;
+
 }
