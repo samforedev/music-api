@@ -9,6 +9,15 @@ export class AlbumService implements IAlbumService {
 
 
     /**
+     * Get album by title
+     * @param name 
+     */
+    getByTitle(title: string): Promise<IAlbum | null> {
+        return Album.findOne({ title: { $regex: title, $options: "i" } });
+    }
+
+
+    /**
      * Create a new album in db
      * @param albumData 
      * @returns 

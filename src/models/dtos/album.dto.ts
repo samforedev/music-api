@@ -14,7 +14,7 @@ export interface AlbumDto {
     duration?: number | null;
     recordLabel?: string | null;
     recordedAt?: string | null;
-    status?: StatusEntity | null;
+    status?: StatusEntity | StatusEntity.DEACTIVATED;
 }
 
 export interface MinimalALbumDto {

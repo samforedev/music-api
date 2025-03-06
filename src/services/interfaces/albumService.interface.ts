@@ -16,4 +16,6 @@ export interface IAlbumService {
 
     changeStatus(id: string, status: StatusEntity): Promise<IAlbum | null>;
 
+    getByTitle(title: string): Promise<IAlbum | null>;
+
 }
