@@ -23,4 +23,6 @@ export interface IArtistService {
 
     getByName(name: string): Promise<IArtist | null>;
 
+    addMany(artistsData: ArtistDto[]): Promise<IArtist[] | null>;
+
 }

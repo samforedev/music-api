@@ -47,7 +47,7 @@ export class BandService implements IBandService {
      * @returns IBand or null
      */
     async getById(id: string): Promise<IBand | null> {
-        return Band.findById(id);
+        return Band.findById(id).populate("membersDetails").exec();
     }
 
     /**

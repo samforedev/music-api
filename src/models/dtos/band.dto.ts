@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import { StatusEntity } from "../enums/common.enum";
+import { IArtist } from "../entities/artist.model";
 
 /**
  * Dto to Band
@@ -12,6 +13,7 @@ export interface BandDto {
     disbandYear?: number | null;
     genre: string[];
     members?: Types.ObjectId[] | string[];
+    membersDetails?: IArtist[] | string[];
     nationality?: string;
     status?: StatusEntity | null;
 }

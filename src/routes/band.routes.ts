@@ -11,6 +11,7 @@ router.post("/GetByFilters", (req, res) => bandController.getBandByFilters(req, 
 router.post("/ChangeStatus/:id/Activated", (req, res) => bandController.changeBandStatus(req, res));
 router.post("/ChangeStatus/:id/Deactivated", (req, res) => bandController.changeBandStatus(req, res));
 router.post("/GetByArtistId", (req, res) => bandController.getByArtistId(req, res));
+router.post("/AddManyArtist/:id", (req, res) => bandController.addMembersToBand(req, res));
 
 
 export default router;

@@ -8,6 +8,15 @@ import { IArtistService } from "./interfaces/artistService.interface";
 export class ArtistService implements IArtistService {
 
     /**
+     * Add many Artists
+     * @param artistData 
+     */
+    async addMany(artistsData: ArtistDto[]): Promise<IArtist[] | null> {
+        const artists = await Artist.insertMany(artistsData);
+        return artists.map(artist => artist.toObject() as IArtist);
+    }
+
+    /**
      * Add new Artist to Database
      * @param artistData
      * @return IArtist

@@ -128,7 +128,7 @@ export class BandController {
                 formationYear: band.formationYear,
                 disbandYear: band.disbandYear || null,
                 genre: band.genre,
-                members: band.members || [],
+                membersDetails: band.membersDetails || [],
                 nationality: band.nationality || '',
                 status: band.status || StatusEntity.DEACTIVATED
             };
