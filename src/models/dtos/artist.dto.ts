@@ -22,3 +22,14 @@ export interface MinimalArtistDto {
     name: string;
     role: string;
 }
+
+
+export interface AddManyArtistsDto {
+    success: ArtistDto[];
+    failed: Array<{ name: string; reason?: string }>
+}
+
+export interface AddManyResponseDto {
+    success: string[];
+    failed: Array<{ name: string; reason?: string }>;
+}

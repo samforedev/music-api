@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ArtistService } from "../services/artist.service";
 import { IArtistService } from "../services/interfaces/artistService.interface";
-import { ArtistDto, MinimalArtistDto } from "../models/dtos/artist.dto";
+import { AddManyArtistsDto, AddManyResponseDto, ArtistDto, MinimalArtistDto } from "../models/dtos/artist.dto";
 import { ResponseHandler } from "../utils/responseHandler";
 import { ERROR_CHANGESTATUS, ERROR_CREATING, RESOURCE_ALREADY_EXISTS } from "../models/constants";
 import { FilterRequestDto } from "../models/commons/paginateResponse.model";
@@ -43,6 +43,58 @@ export class ArtistController {
         } catch (err) {
             ResponseHandler.error(res, err);
         }
+    }
+
+
+    /**
+     * Create multiple artists
+     * @param req 
+     * @param res 
+     */
+    async createManyArtist(req: Request, res: Response): Promise<void> {
+        try {
+
+            const artistsData: ArtistDto[] = req.body;
+
+            var addMayDto: AddManyArtistsDto = {
+                success: [],
+                failed: []
+            };
+
+            for (const artistData of artistsData) {
+                const resultValidation = await this.artistForCreateValidation(artistData);
+                if (!resultValidation.isValid) {
+                    addMayDto.failed.push({ name: artistData.name, reason: resultValidation.reason })
+                    continue;
+                }
+
+                addMayDto.success.push(artistData);
+            }
+
+            if (addMayDto.success.length === 0) {
+                return ResponseHandler.success(res, addMayDto, ERROR_CREATING);
+            }
+
+            const artists = await this.artistService.addMany(addMayDto.success);
+            if (!artists) {
+                return ResponseHandler.error(res, ERROR_CREATING);
+            }
+
+            const artistsDto: any[] = artists.map(artist => ({
+                id: artist._id,
+                name: artist.name,
+                role: artist.role
+            }));
+
+            const artistsResponse: AddManyResponseDto = {
+                success: artistsDto.map(artist => artist.id),
+                failed: addMayDto.failed
+            };
+            ResponseHandler.success(res, artistsResponse, 'Artists Created');
+        } catch (err) {
+            ResponseHandler.error(res, err);
+        }
+
     }
 
     /**
@@ -169,6 +221,20 @@ export class ArtistController {
         } catch (err) {
             ResponseHandler.error(res, err);
         }
+    }
+
+
+    /**
+     * Method o validate artistData
+     * @param artist 
+     */
+    private async artistForCreateValidation(artist: ArtistDto): Promise<{ isValid: boolean, reason?: string }> {
+        const artistFound = await this.artistService.getByName(artist.name);
+        if (artistFound) {
+            return { isValid: false, reason: RESOURCE_ALREADY_EXISTS }
+        };
+
+        return { isValid: true };
     }
 
 }
