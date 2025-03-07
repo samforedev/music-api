@@ -1,5 +1,6 @@
 export const BASE_URL = "/api/v1";
 export const MONGO_URI = process.env.MONGO_URI || "";
+export const MONGO_URI_ATLAS = process.env.MONGO_URI_ATLAS || "";
 export const PORT = process.env.PORT ? Number(process.env.PORT) : 5000;
 
 
