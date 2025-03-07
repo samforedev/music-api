@@ -18,6 +18,7 @@ import { IArtistService } from "../services/interfaces/artistService.interface";
 import { ArtistService } from "../services/artist.service";
 import { StatusEntity } from "../models/enums/common.enum";
 import { FilterRequestDto } from "../models/commons/paginateResponse.model";
+import { ArtistDto } from "../models/dtos/artist.dto";
 
 
 /** Band controller */
@@ -71,6 +72,50 @@ export class BandController {
             }
 
             ResponseHandler.success(res, bandCreated.id, 'Band created', 201);
+        } catch (err) {
+            ResponseHandler.error(res, err);
+        }
+    }
+
+
+    /**
+     * Create new Artist and add to band
+     * @param req 
+     * @param res 
+     */
+    async createAndAddNewMember(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const artistData: ArtistDto = req.body;
+
+            const bandFound = await this.bandService.getById(id);
+            if (!bandFound) {
+                return ResponseHandler.errorNotFound(res, 'Band');
+            }
+
+            const artistCreated = await this.artistService.addOne(artistData);
+            if (!artistCreated) {
+                return ResponseHandler.error(res, `${artistData.name} ${ERROR_CREATING}`)
+            }
+
+            const bandUpdated = await this.bandService.addMember(id, artistCreated.id);
+            if (!bandUpdated) {
+                return ResponseHandler.error(res, ERROR_UPDATING);
+            }
+
+            const bandResponse: BandDto = {
+                id: bandUpdated.id,
+                name: bandUpdated.name,
+                alias: bandUpdated.alias || '',
+                formationYear: bandUpdated.formationYear,
+                disbandYear: bandUpdated.disbandYear || null,
+                genre: bandUpdated.genre,
+                membersDetails: bandUpdated.membersDetails || [],
+                nationality: bandUpdated.nationality || '',
+                status: bandUpdated.status || StatusEntity.DEACTIVATED
+            };
+
+            ResponseHandler.success(res, bandResponse);
         } catch (err) {
             ResponseHandler.error(res, err);
         }

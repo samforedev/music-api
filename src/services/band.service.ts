@@ -9,6 +9,21 @@ import { IBandService } from "./interfaces/bandService.interface";
 export class BandService implements IBandService {
 
     /**
+     * Add new Memeber
+     * @param id 
+     * @param artistId 
+     */
+    async addMember(id: string, artistId: string): Promise<IBand | null> {
+        const musicBand = await Band.findByIdAndUpdate(
+            id,
+            { $addToSet: { members: artistId } },
+            { new: true }
+        ).populate("membersDetails");
+
+        return musicBand;
+    }
+
+    /**
      * Add Many members (artists) to band
      * @param artistsIds 
      */

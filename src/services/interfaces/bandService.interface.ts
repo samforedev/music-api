@@ -25,4 +25,6 @@ export interface IBandService {
 
     addMembers(id: string, artistsIds: string[]): Promise<IBand | null>;
 
+    addMember(id: string, artistId: string): Promise<IBand | null>;
+
 }
