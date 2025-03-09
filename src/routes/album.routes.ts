@@ -11,5 +11,6 @@ router.post("/GetByFilters", (req, res) => albumController.getAlbumByFilter(req,
 router.post("/ChangeStatus/:id/Activated", (req, res) => albumController.changeAlbumStatus(req, res));
 router.post("/ChangeStatus/:id/Deactivated", (req, res) => albumController.changeAlbumStatus(req, res));
 router.get("/GetByTitle", (req, res) => albumController.getAlbumByTitle(req, res));
+router.get("/GetByBand", (req, res) => albumController.getAllAlbumsByBandId(req, res));
 
 export default router;

@@ -7,12 +7,23 @@ import { IAlbumService } from "./interfaces/albumService.interface";
 
 export class AlbumService implements IAlbumService {
 
+    /**
+     * Get all albums by band
+     * @param id 
+     * @param page 
+     * @param limit 
+     */
+    async getAllByBandId(id: string, page: number, limit: number): Promise<PaginateResponse<IAlbum>> {
+        const filter: Record<string, any> = { "band": id };
+        return Paginate(Album, page, limit, filter);
+    }
+
 
     /**
      * Get album by title
      * @param name 
      */
-    getByTitle(title: string): Promise<IAlbum | null> {
+    async getByTitle(title: string): Promise<IAlbum | null> {
         return Album.findOne({ title: { $regex: title, $options: "i" } });
     }
 

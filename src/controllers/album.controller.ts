@@ -239,4 +239,41 @@ export class AlbumController {
     }
 
 
+    /**
+     * Get albums by Band Id
+     * @param req 
+     * @param res 
+     * @returns 
+     */
+    async getAllAlbumsByBandId(req: Request, res: Response): Promise<void> {
+        try {
+            const page = Number(req.headers['page-number']) || 1;
+            const limit = Number(req.headers['page-limit']) || 10;
+            const { id } = req.params;
+
+            const bandFound = await this.bandService.getById(id);
+            if (!bandFound) {
+                return ResponseHandler.errorNotFound(res, 'band');
+            }
+
+            const pagingResponse = await this.albumService.getAllByBandId(id, page, limit);
+            const albums: MinimalALbumDto[] = pagingResponse.data.map(album => ({
+                id: album.id,
+                title: album.title,
+                releaseYear: album.releaseYear
+            }));
+
+            res.set({
+                'page-count': pagingResponse.total,
+                'total-pages': pagingResponse.totalPages,
+                'page-number': pagingResponse.page,
+                'page-limit': pagingResponse.limit
+            });
+
+            ResponseHandler.success(res, albums);
+        } catch (err) {
+            ResponseHandler.error(res, err);
+        }
+    }
+
 }

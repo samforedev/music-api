@@ -18,4 +18,6 @@ export interface IAlbumService {
 
     getByTitle(title: string): Promise<IAlbum | null>;
 
+    getAllByBandId(id: string, page: number, limit: number): Promise<PaginateResponse<IAlbum>>;
+
 }
