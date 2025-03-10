@@ -9,6 +9,36 @@ import { IBandService } from "./interfaces/bandService.interface";
 export class BandService implements IBandService {
 
     /**
+     * Add new Album
+     * @param id 
+     * @param albumId 
+     * @returns 
+     */
+    async addOneAlbum(id: string, albumId: string): Promise<IBand | null> {
+        const musicBand = await Band.findByIdAndUpdate(
+            id,
+            { $addToSet: { albums: albumId } },
+            { new: true }
+        );
+        return musicBand;
+    }
+
+    /**
+     * Add many Albums
+     * @param id 
+     * @param albumIds 
+     * @returns 
+     */
+    async addAlbums(id: string, albumIds: string[]): Promise<IBand | null> {
+        const musicBand = await Band.findByIdAndUpdate(
+            id,
+            { $addToSet: { albums: { $each: albumIds } } },
+            { new: true }
+        );
+        return musicBand;
+    }
+
+    /**
      * Add new Memeber
      * @param id 
      * @param artistId 
@@ -62,7 +92,10 @@ export class BandService implements IBandService {
      * @returns IBand or null
      */
     async getById(id: string): Promise<IBand | null> {
-        return Band.findById(id).populate("membersDetails").exec();
+        return Band.findById(id)
+            .populate("membersDetails")
+            .populate("albumsDetails")
+            .exec();
     }
 
     /**

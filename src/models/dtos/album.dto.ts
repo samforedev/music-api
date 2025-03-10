@@ -21,4 +21,8 @@ export interface MinimalALbumDto {
     id: string;
     title: string;
     releaseYear: Date;
+    band?: {
+        id?: string;
+        name?: string;
+    };
 }

@@ -46,7 +46,9 @@ export class AlbumService implements IAlbumService {
      * @returns 
      */
     async getAll(page: number, limit: number): Promise<PaginateResponse<IAlbum>> {
-        return Paginate(Album, page, limit);
+        const results = await Paginate(Album, page, limit);
+        await Promise.all(results.data.map(album => album.populate("bandDetail")));
+        return results;
     }
 
 
@@ -56,7 +58,7 @@ export class AlbumService implements IAlbumService {
      * @returns 
      */
     async getById(id: string): Promise<IAlbum | null> {
-        return Album.findById(id);
+        return Album.findById(id).populate("bandDetail").exec();
     }
 
 

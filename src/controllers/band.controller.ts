@@ -174,6 +174,7 @@ export class BandController {
                 disbandYear: band.disbandYear || null,
                 genre: band.genre,
                 membersDetails: band.membersDetails || [],
+                albumsDetails: band.albumsDetails || [],
                 nationality: band.nationality || '',
                 status: band.status || StatusEntity.DEACTIVATED
             };

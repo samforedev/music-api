@@ -44,7 +44,7 @@ AlbumSchema.virtual("bandDetail", {
     localField: "band",
     foreignField: "_id",
     justOne: true,
-    options: { select: "name formationYear status" }
+    options: { select: "name formationYear" }
 });
 
 export const Album = mongoose.model<IAlbum>("Album", AlbumSchema);

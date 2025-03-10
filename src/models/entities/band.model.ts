@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { StatusEntity } from "../enums/common.enum";
 import { IArtist } from "./artist.model";
+import { IAlbum } from "./album.model";
 
 /**
  * Interface to define the structure of Band
@@ -14,6 +15,8 @@ export interface IBand extends Document {
     genre: string[];
     members?: Types.ObjectId[] | string[];
     membersDetails: IArtist[];
+    albums?: Types.ObjectId[] | string[];
+    albumsDetails?: IAlbum[];
     nationality?: string;
     status: StatusEntity;
 }
@@ -30,6 +33,7 @@ const BandSchema: Schema<IBand> = new Schema(
         isActive: { type: Boolean, default: true },
         genre: [{ type: String, required: true }],
         members: [{ type: Schema.Types.ObjectId, ref: "Artist" }],
+        albums: [{ type: Schema.Types.ObjectId, ref: "Album" }],
         nationality: { type: String },
         status: { type: String, enum: Object.values(StatusEntity), default: StatusEntity.ACTIVATED }
     },
@@ -45,5 +49,11 @@ BandSchema.virtual("membersDetails", {
     justOne: false,
     options: { select: "name alias role" }
 });
-
+BandSchema.virtual("albumsDetails", {
+    ref: "Album",
+    localField: "albums",
+    foreignField: "_id",
+    justOne: false,
+    options: { select: "title releaseYear" }
+});
 export const Band = mongoose.model<IBand>("Band", BandSchema);

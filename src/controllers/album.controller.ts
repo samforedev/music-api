@@ -6,7 +6,7 @@ import { IAlbumService } from "../services/interfaces/albumService.interface";
 import { IBandService } from "../services/interfaces/bandService.interface";
 import { ResponseHandler } from "../utils/responseHandler";
 import { AlbumDto, MinimalALbumDto } from "../models/dtos/album.dto";
-import { ERROR_CHANGESTATUS, ERROR_CREATING, RESOURCE_ALREADY_EXISTS } from "../models/constants";
+import { ALBUM_ERROR_ASSIGN_BAND, ERROR_CHANGESTATUS, ERROR_CREATING, RESOURCE_ALREADY_EXISTS } from "../models/constants";
 import { FilterRequestDto } from "../models/commons/paginateResponse.model";
 import { StatusEntity } from "../models/enums/common.enum";
 
@@ -34,6 +34,7 @@ export class AlbumController {
     async createAlbum(req: Request, res: Response): Promise<void> {
         try {
             const albumData: AlbumDto = req.body;
+            var flag = false;
 
             const albumFound = await this.albumService.getByTitle(albumData.title);
             if (albumFound) {
@@ -47,11 +48,19 @@ export class AlbumController {
                     return ResponseHandler.errorNotFound(
                         res, `Album ${albumData.band}`);
                 }
+                flag = true;
             }
 
             const albumCreated = await this.albumService.addOne(albumData);
             if (!albumCreated) {
                 return ResponseHandler.error(res, { message: ERROR_CREATING });
+            }
+
+            if (flag) {
+                const bandUpdated = await this.bandService.addOneAlbum(albumData.band!.toString(), albumCreated._id!.toString());
+                if (!bandUpdated) {
+                    return ResponseHandler.error(res, { message: ALBUM_ERROR_ASSIGN_BAND });
+                }
             }
 
             ResponseHandler.success(res, albumCreated.id, 'Album created');
@@ -82,10 +91,17 @@ export class AlbumController {
             });
 
             const albumsResponse: MinimalALbumDto[] = pagingAlbums.data.map(album => ({
-                id: album.id,
+                id: album.id.toString(),
                 title: album.title,
-                releaseYear: album.releaseYear
+                releaseYear: album.releaseYear,
+                band: album.bandDetail
+                    ? {
+                        id: album.bandDetail._id!.toString() || undefined,
+                        name: album.bandDetail.name || undefined
+                    }
+                    : undefined
             }));
+
 
             ResponseHandler.success(res, albumsResponse);
         } catch (err) {
@@ -116,7 +132,7 @@ export class AlbumController {
                 id: album.id,
                 title: album.title,
                 releaseYear: album.releaseYear,
-                band: album.band,
+                bandDetail: album.bandDetail || null,
                 genre: album.genre,
                 description: album.description,
                 duration: album.duration,

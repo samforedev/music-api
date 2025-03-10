@@ -21,3 +21,4 @@ export const INVALID_REQUEST_DATA = "Invalid request data";
 export const ADDMANY_MEMBERS_ERROR_ARRAY = "Invalidad Artist Ids, is not empty";
 export const ERROR_ADD_MANY = "No se guardaron todos los miembros";
 export const ARTIST_ALREADY_IN_BAND = "Artist already in band";
+export const ALBUM_ERROR_ASSIGN_BAND = "The album could not be assigned to the band ";
