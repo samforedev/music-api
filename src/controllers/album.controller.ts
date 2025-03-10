@@ -6,24 +6,56 @@ import { IAlbumService } from "../services/interfaces/albumService.interface";
 import { IBandService } from "../services/interfaces/bandService.interface";
 import { ResponseHandler } from "../utils/responseHandler";
 import { AlbumDto, MinimalALbumDto } from "../models/dtos/album.dto";
-import { ALBUM_ERROR_ASSIGN_BAND, ERROR_CHANGESTATUS, ERROR_CREATING, RESOURCE_ALREADY_EXISTS } from "../models/constants";
+import { ALBUM_ERROR_ASSIGN_BAND, ERROR_CHANGESTATUS, ERROR_CREATING, ERROR_UPDATING, RESOURCE_ALREADY_EXISTS } from "../models/constants";
 import { FilterRequestDto } from "../models/commons/paginateResponse.model";
 import { StatusEntity } from "../models/enums/common.enum";
+import { ISongService } from "../services/interfaces/song.service.interface";
+import { SongService } from "../services/song.service";
 
 /** Album controller */
 export class AlbumController {
 
     private albumService: IAlbumService;
     private bandService: IBandService;
+    private songService: ISongService;
 
     constructor(
         albumService?: IAlbumService,
-        bandService?: IBandService
+        bandService?: IBandService,
+        songServoce?: ISongService
     ) {
         this.albumService = albumService || new AlbumService();
         this.bandService = bandService || new BandService();
+        this.songService = songServoce || new SongService();
     }
 
+    async addSongToAlbum(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const { songId } = req.body;
+
+            console.log(songId);
+
+            const albumFound = await this.albumService.getById(id);
+            if (!albumFound) {
+                return ResponseHandler.errorNotFound(res, 'Album');
+            }
+
+            const songFound = await this.songService.getById(songId);
+            if (!songFound) {
+                return ResponseHandler.errorNotFound(res, 'Song');
+            }
+
+            const albumUpdated = await this.albumService.addSong(id, songId);
+            if (!albumUpdated) {
+                return ResponseHandler.error(res, { message: ERROR_UPDATING });
+            }
+
+            ResponseHandler.success(res, albumUpdated._id, 'Song add Successfully');
+        } catch (err) {
+            ResponseHandler.error(res, err);
+        }
+    }
 
     /**
      * Create a new Album
@@ -136,6 +168,7 @@ export class AlbumController {
                 genre: album.genre,
                 description: album.description,
                 duration: album.duration,
+                songsDetails: album.songsDetails || [],
                 recordLabel: album.recordLabel,
                 recordedAt: album.recordedAt,
                 status: album.status

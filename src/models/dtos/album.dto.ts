@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { IBand } from "../entities/band.model";
 import { StatusEntity } from "../enums/common.enum";
+import { ISong } from "../entities/song.model";
 
 /** Dto to album */
 export interface AlbumDto {
@@ -12,6 +13,8 @@ export interface AlbumDto {
     genre?: string | null;
     description?: string;
     duration?: number | null;
+    songs?: Types.ObjectId[] | string[];
+    songsDetails?: ISong[] | null;
     recordLabel?: string | null;
     recordedAt?: string | null;
     status?: StatusEntity | StatusEntity.DEACTIVATED;

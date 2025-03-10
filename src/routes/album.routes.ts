@@ -12,5 +12,6 @@ router.post("/ChangeStatus/:id/Activated", (req, res) => albumController.changeA
 router.post("/ChangeStatus/:id/Deactivated", (req, res) => albumController.changeAlbumStatus(req, res));
 router.get("/GetByTitle", (req, res) => albumController.getAlbumByTitle(req, res));
 router.get("/GetByBand", (req, res) => albumController.getAllAlbumsByBandId(req, res));
+router.post("/:id/AddSong", (req, res) => albumController.addSongToAlbum(req, res));
 
 export default router;

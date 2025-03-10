@@ -7,6 +7,16 @@ import { IAlbumService } from "./interfaces/albumService.interface";
 
 export class AlbumService implements IAlbumService {
 
+    async addSong(id: string, songId: string): Promise<IAlbum | null> {
+        const album = await Album.findByIdAndUpdate(
+            id,
+            { $addToSet: { songs: songId } },
+            { new: true }
+        ).populate("songsDetails");
+
+        return album;
+    }
+
     /**
      * Get all albums by band
      * @param id 
@@ -58,7 +68,10 @@ export class AlbumService implements IAlbumService {
      * @returns 
      */
     async getById(id: string): Promise<IAlbum | null> {
-        return Album.findById(id).populate("bandDetail").exec();
+        return Album.findById(id)
+            .populate("bandDetail")
+            .populate("songsDetails")
+            .exec();
     }
 
 
