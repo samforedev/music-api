@@ -19,7 +19,12 @@ export interface ISong extends Document {
  * Mongoose schema for the song model
  */
 const SongSchema: Schema<ISong> = new Schema(
-    {},
+    {
+        title: { type: String, required: true },
+        band: { type: Schema.Types.ObjectId, ref: "Band" },
+        album: { types: Schema.Types.ObjectId, ref: "Album" },
+        status: { types: String, enum: Object.values(StatusEntity), default: StatusEntity.ACTIVATED }
+    },
     { timestamps: true }
 );
 
