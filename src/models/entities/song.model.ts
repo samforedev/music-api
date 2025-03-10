@@ -22,8 +22,8 @@ const SongSchema: Schema<ISong> = new Schema(
     {
         title: { type: String, required: true },
         band: { type: Schema.Types.ObjectId, ref: "Band" },
-        album: { types: Schema.Types.ObjectId, ref: "Album" },
-        status: { types: String, enum: Object.values(StatusEntity), default: StatusEntity.ACTIVATED }
+        album: { type: Schema.Types.ObjectId, ref: "Album" },
+        status: { type: String, enum: Object.values(StatusEntity), default: StatusEntity.ACTIVATED }
     },
     { timestamps: true }
 );

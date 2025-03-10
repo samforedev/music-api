@@ -14,10 +14,8 @@ export class SongService implements ISongService {
 
     async getAll(page: number, limit: number): Promise<PaginateResponse<ISong>> {
         const songs = await Paginate(Song, page, limit);
-        await Promise.all(songs.data.map(song => {
-            song.populate("bandDetail");
-            song.populate("albumDetail")
-        }));
+        await Promise.all(songs.data.map(song => song.populate("bandDetail")));
+        await Promise.all(songs.data.map(song => song.populate("albumDetail")));
         return songs;
     }
 
